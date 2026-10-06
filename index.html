@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AJC Worth Calculator</title>
+
+<style>
+body {
+    font-family: 'Trebuchet MS', sans-serif;
+    background: linear-gradient(135deg, #ffdd8c, #ffb36b);
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 1000px;
+    margin: auto;
+    background: #fff8e6;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.15);
+}
+h1 {
+    text-align: center;
+    color: #5a3e1b;
+    margin-bottom: 10px;
+}
+.columns {
+    display: flex;
+    gap: 20px;
+}
+.column {
+    flex: 1;
+}
+textarea {
+    width: 100%;
+    height: 150px;
+    border-radius: 10px;
+    border: 2px solid #d4a762;
+    padding: 10px;
+    font-size: 16px;
+    background: #fffdf7;
+}
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background: #ff9f43;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+button:hover {
+    background: #ff7f00;
+}
+.result {
+    margin-top: 20px;
+    padding: 20px;
+    background: #fff3d1;
+    border-radius: 10px;
+    border: 2px solid #d4a762;
+    font-size: 18px;
+}
+.win { color: green; font-weight: bold; }
+.lose { color: red; font-weight: bold; }
+.fair { color: #555; font-weight: bold; }
+</style>
+</head>
+
+<body>
+<div class="container">
+    <h1>AJC Worth Calculator</h1>
+
+    <form id="tradeForm">
+        <div class="columns">
+            <div class="column">
+                <h2>You Give</h2>
+                <textarea name="give" placeholder="Example:
+2 x Den Beta
+1 x Black Long Spiked Collar"></textarea>
+            </div>
+
+            <div class="column">
+                <h2>You Get</h2>
+                <textarea name="get" placeholder="Example:
+1 x Black Long Spiked Collar"></textarea>
+            </div>
+        </div>
+
+        <button type="submit">Check Trade</button>
+    </form>
+
+    <div id="result"></div>
+</div>
+
+<script>
+document.getElementById("tradeForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const give = document.querySelector("[name='give']").value;
+    const get  = document.querySelector("[name='get']").value;
+
+    const res = await fetch("/trade", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `give=${encodeURIComponent(give)}&get=${encodeURIComponent(get)}`
+    });
+
+    const data = await res.json();
+
+    let verdictClass =
+        data.verdict === "Win"  ? "win" :
+        data.verdict === "Lose" ? "lose" : "fair";
+
+    document.getElementById("result").innerHTML = `
+        <div class="result">
+            <p><strong>You give total:</strong> ${data.giveTotal}</p>
+            <p><strong>You get total:</strong> ${data.getTotal}</p>
+            <p class="${verdictClass}"><strong>Verdict:</strong> ${data.verdict}</p>
+        </div>
+    `;
+});
+</script>
+
+</body>
+</html>

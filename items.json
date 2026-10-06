@@ -1,0 +1,28 @@
+{
+  "Black Long Spiked Collar": {
+    "value": 45,
+    "category": "spike",
+    "image": "images/black_long.png"
+  },
+  "Red Long Spiked Collar": {
+    "value": 20,
+    "category": "spike",
+    "image": "images/red_long.png"
+  },
+  "Blue Long Spiked Collar": {
+    "value": 18,
+    "category": "spike",
+    "image": "images/blue_long.png"
+  },
+  "Green Long Spiked Collar": {
+    "value": 15,
+    "category": "spike",
+    "image": "images/green_long.png"
+  },
+
+  "Den Beta": {
+    "value": 1,
+    "category": "den_beta",
+    "image": "images/den_beta.png"
+  }
+}
